@@ -1,7 +1,7 @@
 //
 // WebSoul : A full Javascript Netsoul client
 //
-// Copyright (c) 2010 Vincent Giersch <mail@vincent.sh>
+// Copyright (c) 2011 Vincent Giersch <mail@vincent.sh>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
