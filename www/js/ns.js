@@ -53,11 +53,16 @@ function websoul(socket)
             }
 
             // Callback function
+            var lines = null;
             var result_who = function(data) {
-                var lines = data.split('\n'), who;
+                var who;
                 var idx = 0;
                 var result = [];
                 
+                lines += data;
+                if (lines.indexOf("who rep 002 -- cmd end") < 0)                
+                    return;
+                lines = lines.split('\n');
                 for (var i = 0 ; i < lines.length ; i++)
                 {
                     if (lines[i].indexOf(' | who ') > 0)
