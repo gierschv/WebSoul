@@ -92,7 +92,7 @@ function ui()
         var idx = tab === null ? 0 : tab.length;
         
         tab[idx] = {};
-        tab[idx].login = login;
+        tab[idx].login = login.replace(/^\s+/g,'').replace(/\s+$/g,'');
         tab[idx].is_contact = is_contact;
         
         try {
