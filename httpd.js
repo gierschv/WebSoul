@@ -43,7 +43,7 @@ var httpd = http.createServer(function(req, res){
     var file = path.join(basepath, uri);
 
     path.exists(file, function(exists) {
- 	if (!exists || file.toString().indexOf(basepath) != 0)
+    if (!exists || file.toString().indexOf(basepath) !== 0)
 	{
 	    res.writeHead(404, {"Content-Type": "text/plain"});
 	    res.write("404 - Page not found");
@@ -75,28 +75,28 @@ socket.on("connection", function(client){
     var auth_callback = function(data)
     {
 	data = data.split(' ');
-	if (data[0] == 'auth' && data.length == 4 && data[1] != "")
+	if (data[0] == 'auth' && data.length == 4 && data[1] !== "")
 	{
 	    if (!data[1] in login_allowed)
 		client.send("You're not allowed to connect from here");
-	    else if (nsc[data[1]] == undefined)
+	    else if (nsc[data[1]] === undefined)
 	    {
-		nsc[data[1]] = {};
-		nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
-			encodeURIComponent(data[1]), data[2],
-			data[3], function (res)
-			{
-			    if (res == null)
+            nsc[data[1]] = {};
+            nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
+                encodeURIComponent(data[1]), data[2],
+			    data[3], function (res)
 			    {
-				client.send("ok\n");
-				client.removeListener("message", auth_callback);
-				client.addListener("message", nsc[data[1]].sock.send);
-				client.addListener("disconnect", function(){ nsc[data[1]].sock.setWs(null); });
-			    }
-			    else
-				client.send(data);
-			}, client);
-		nsc[data[1]].pwd = data[2];
+                    if (res === null)
+                    {
+                        client.send("ok\n");
+                        client.removeListener("message", auth_callback);
+                        client.addListener("message", nsc[data[1]].sock.send);
+                        client.addListener("disconnect", function(){ nsc[data[1]].sock.setWs(null); });
+                    }
+                    else
+                        client.send(data);
+                }, client);
+            nsc[data[1]].pwd = data[2];
 	    }
 	    else if (nsc[data[1]].pwd == data[2])
 	    {
