@@ -328,6 +328,10 @@ function ui()
                 notif.ondisplay = function(event) {
                     setTimeout(function() { event.currentTarget.cancel(); }, 5000);
                 };
+                notif.onclick = function(event)
+                {
+                    chat_init(data.login);
+                };
                 notif.show();
             }
         }
