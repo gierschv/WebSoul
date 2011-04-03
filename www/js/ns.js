@@ -19,68 +19,69 @@
 
 function websoul(socket)
 {
+    // Serialize logins as netsoul format : {giersc_v,giersc_v}
     function serialize_ns(tab)
     {
-	var result = "{";
-
-	for (var i = 0 ; i < tab.length ; i++)
-	{
-	    result += tab[i];
-	    if (i + 1 != tab.length)
-		result += ",";
-	}
-	result += "}";
-	return result;
+        var result = "{";
+        for (var i = 0 ; i < tab.length ; i++)
+        {
+            result += tab[i];
+            if (i + 1 != tab.length)
+                result += ",";
+        }
+        result += "}";
+        return result;
     }
 
+    // Public methods for ui
     return {
-	user_cmd_who: function(login, callback)
-	{
-	    if (login.constructor == Array)
-	    {
-		var tab = [];
-		for (var i = 0 ; i < login.length ; i++)
-		    tab[i] = login[i].login;
-		login = serialize_ns(tab);
-	    }
-	    var result_who = function(data) {
-		var lines = data.split('\n'), who;
-		var idx = 0;
-		var result = new Array()
+        user_cmd_who: function(login, callback)
+        {
+            // Call with an array of logins : serialize
+            if (login.constructor == Array)
+            {
+                var tab = [];
+                for (var i = 0 ; i < login.length ; i++)
+                    tab[i] = login[i].login;
+                login = serialize_ns(tab);
+            }
 
-		for (var i = 0 ; i < lines.length ; i++)
-		{
-		    if (lines[i].indexOf(' | who ') > 0)
-		    {
-			who = lines[i].split(' | who ');
-			if (who.length == 2 && who[1].indexOf('rep') != 0)
-			    result[idx++] = who[1];
-		    }
-		}
-		socket.removeEvent('message', result_who);
-		callback(result);
-	    };
-	    socket.addEvent('message', result_who);
-	    socket.send("user_cmd who " + login + "\n");
-	},
-	user_cmd_msg_user: function(login, msg)
-	{
-	    if (login.constructor == Array)
-		login = serialize_ns(login);
-	    socket.send("user_cmd msg_user " + login + " msg "
-			+ encodeURIComponent(msg) + "\n");
-	},
-	user_cmd_msg_receiv: function(msg)
-	{
-	    res = {};
-	    if (msg.indexOf(' | msg ') > 0)
-	    {
-		msg = msg.split(' | msg ');
-		res.login = msg[0].split(' ')[1].split(':')[3].split('@')[0];
-		res.msg = decodeURIComponent(msg[1].split(' ')[0]);
-		return res;
+            // Callback function
+            var result_who = function(data) {
+                var lines = data.split('\n'), who;
+                var idx = 0;
+                var result = [];
+                
+                for (var i = 0 ; i < lines.length ; i++)
+                {
+                    if (lines[i].indexOf(' | who ') > 0)
+                    {
+                        who = lines[i].split(' | who ');
+                        if (who.length == 2 && who[1].indexOf('rep') !== 0)
+                            result[idx++] = who[1];
+                    }
+                }
+                socket.removeEvent('message', result_who);
+                callback(result);
+            };
+            
+            socket.addEvent('message', result_who);
+            socket.send("user_cmd who " + login + "\n");
+        },
+        user_cmd_msg_user: function(login, msg)
+        {
+            socket.send("user_cmd msg_user " + login + " msg " + escape(msg) + "\n");
+	    },
+        user_cmd_msg_receiv: function(msg)
+        {
+            if (msg.indexOf(' | msg ') > 0)
+            {
+                res = {};
+                res.login = msg.split(' | msg ')[0].split(' ')[1].split(':')[3].split('@')[0];
+                res.msg = decodeURIComponent(msg[1].split(' ')[0]);
+                return res;
+	        }
+	        return null;
 	    }
-	    return null;
-	}
    };
 }
