@@ -36,7 +36,7 @@ if (process.argv.length != 4)
 }
 
 // Cloud9ide
-process.argv[3] = process.env.C9_PORT;
+//process.argv[3] = process.env.C9_PORT;
 
 // List allowed users
 var login_allowed = ["giersc_v"];
