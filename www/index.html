@@ -22,33 +22,31 @@
   <body>
     <div id="overlay">
       <div class="box" id="box_connect">
-	<form action="" id="form_login" method="POST">
-	  <h2>WebSoul - Connection</h2>
-	  <div class="content">
-	    <span><label for="connect_login">Login : </label><input type="text" name="login" id="connect_login" /></span>
-	    <span><label for="connect_password">Password : </label><input type="password" name="password" id="connect_password" /></span>
-	    <span><label for="connect_location">Location : </label><input type="text" name="location" id="connect_location" value="Epitech" /></span>
-	    <span><label for="connect_remember">Remember-me :</label><input type="checkbox" name="remember" id="connect_remember" /></span>
-	    <div id="connect_error"></div>
-	  </div>
-	  <div class="action"><input type="submit" value="Connection" /></div>
-	</form>
+	    <form action="#" id="form_login" method="POST">
+    	  <h2>WebSoul - Connection</h2>
+    	  <div class="content">
+    	    <span><label for="connect_login">Login : </label><input type="text" name="login" id="connect_login" /></span>
+    	    <span><label for="connect_password">Password : </label><input type="password" name="password" id="connect_password" /></span>
+    	    <span><label for="connect_location">Location : </label><input type="text" name="location" id="connect_location" value="Epitech" /></span>
+    	    <span><label for="connect_remember">Remember-me :</label><input type="checkbox" name="remember" id="connect_remember" /></span>
+    	    <div id="connect_error"></div>
+    	  </div>
+    	  <div class="action"><input type="submit" value="Connection" /></div>
+    	</form>
       </div>
 
       <div class="box" id="box_loading">
-	<form action="" id="form_login">
-	  <h2>WebSoul</h2>
-	  <div class="content">
-	    <div class="throbber"></div>
-	    <p>Connecting to websocket server...</p>
-	  </div>
-	</form>
+    	  <h2>WebSoul</h2>
+    	  <div class="content">
+    	    <div class="throbber"></div>
+    	    <p>Connecting to websocket server...</p>
+    	  </div>
       </div>
     </div>
     <div id="side">
       <h1>WebSoul</h1>
       <ul class="list_contacts"></ul>
-      <form action="" id="contact_add">Add a contact :<br /><input type="text" name="contact" /><input type="submit" value="Ok" /></form>
+      <form action="#" id="contact_add" method="POST">Add a contact :<br /><input type="text" name="contact" /><input type="submit" value="Ok" /></form>
     </div>
 <!--    <div id="content_menu">Netsouled as <span></span> | Logout</div>-->
     <div id="content"></div>

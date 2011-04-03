@@ -76,8 +76,9 @@ function websoul(socket)
         {
             if (msg.indexOf(' | msg ') > 0)
             {
+                msg = msg.split(' | msg ');
                 res = {};
-                res.login = msg.split(' | msg ')[0].split(' ')[1].split(':')[3].split('@')[0];
+                res.login = msg[0].split(' ')[1].split(':')[3].split('@')[0];
                 res.msg = decodeURIComponent(msg[1].split(' ')[0]);
                 return res;
 	        }

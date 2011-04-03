@@ -52,8 +52,8 @@ function ui()
         try {
             localStorage.setItem("contacts", $.toJSON(contacts_new));
         } catch (e) {
-            if (e == QUOTA_EXCEEDED_ERR)
-                alert("Local storage quota exceeded, cannot save contacts.");
+            alert("Cannot save contacts, error is loggued in the JS console");
+            console.log("Localstorage error : " + e);
         }
         $(".list_contacts > li[title='" + login + "']").remove();
         localStorage.removeItem("chat_histo_" + login);
@@ -96,10 +96,10 @@ function ui()
         tab[idx].is_contact = is_contact;
         
         try {
-            localStorage.setItem("contacts", $.toJSON(contacts_new));
+            localStorage.setItem("contacts", $.toJSON(tab));
         } catch (e) {
-            if (e == QUOTA_EXCEEDED_ERR)
-                alert("Local storage quota exceeded, cannot save contacts.");
+            alert("Cannot save contacts, error is loggued in the JS console");
+            console.log("Localstorage error : " + e);
         }
         
         $(".list_contacts").append('<li title="' + login + '" class="' + (is_contact ? "side_list_friend" : "side_list_tmp") +
@@ -294,8 +294,8 @@ function ui()
         try {
             localStorage.setItem("chat_histo_" + login, $.toJSON(histo));
         } catch (e) {
-            if (e == QUOTA_EXCEEDED_ERR)
-                alert("Local storage quota exceeded, cannot save history.");
+            alert("Cannot save history, error is loggued in the JS console");
+            console.log("Localstorage error : " + e);
         }
         return histo[idx];
     }
@@ -341,6 +341,7 @@ function ui()
     $("#form_login").submit(function() {
         var login_callback = function(data)
         {
+            $("#box_loading").hide();
             if (!data.indexOf("ok"))
             {
                 // Save login information as a cookie (in clear...)
@@ -369,9 +370,10 @@ function ui()
         };
 
         socket.addEvent("message", login_callback);
-        socket.send("auth " + $("#connect_login").val() +
-                " " + $("#connect_password").val() +
-                " " + $("#connect_location").val());
+        $("#box_loading").show();
+        socket.send("auth " + escape($("#connect_login").val()) +
+                " " + escape($("#connect_password").val()) +
+                " " + escape($("#connect_location").val()));
         return false;
     });
 
@@ -403,15 +405,18 @@ function ui()
 
     // Trying to reconnect
     socket.on('disconnect', function() {
-        console.log("Connection lost");
         ws_connected = false;
         $("#overlay").show();
         $("#box_loading").show();
         $("#box_connect").hide();
-        while (!ws_connected)
+        var reconnect = function()
         {
-            console.log("Trying to reconnect...");
-            socket.connect();
-        }
+           if (!ws_connected)
+           {
+                setTimeout(reconnect, 2000);
+                socket.connect();
+           }
+        };
+        reconnect();
     });
 }

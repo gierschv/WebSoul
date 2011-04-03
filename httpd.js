@@ -38,9 +38,6 @@ if (process.argv.length != 4)
 // Cloud9ide
 //process.argv[3] = process.env.C9_PORT;
 
-// List allowed users
-var login_allowed = ["giersc_v"];
-
 var httpd = http.createServer(function(req, res){ 
     var basepath = path.join(process.cwd(), "/www");
     var uri = url.parse(req.url).pathname;
@@ -80,39 +77,40 @@ socket.on("connection", function(client){
     var auth_callback = function(data)
     {
 	    data = data.split(' ');
-	    if (data[0] == 'auth' && data.length == 4 && data[1] !== "")
-	    {
-	        if (!data[1] in login_allowed)
-		        client.send("You're not allowed to connect from here");
-            else if (nsc[data[1]] === undefined || nsc[data[1]] === null)
+        var ns_connect_callback = function(res)
+        {
+            if (res === null)
             {
-                nsc[data[1]] = {};
-                nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
-                    escape(data[1]), data[2],
-                    data[3], function (res)
-                    {
-                        if (res === null)
-                        {
-                            client.send("ok\n");
-                            client.removeListener("message", auth_callback);
-                            client.addListener("message", nsc[data[1]].sock.send);
-                            client.addListener("disconnect", function(){ nsc[data[1]].sock.setWs(null); });
-                            nsc[data[1]].pwd = data[2];
-                        }
-                        else
-                        {
-                            client.send(res);
-                            nsc[data[1]] = null;
-                        }
-                    }, client);
-            }
-            else if (nsc[data[1]].pwd == data[2])
-            {
-                client.send("ok\n");
-                nsc[data[1]].sock.setWs(client);
                 client.removeListener("message", auth_callback);
                 client.addListener("message", nsc[data[1]].sock.send);
                 client.addListener("disconnect", function(){ nsc[data[1]].sock.setWs(null); });
+                client.send("ok\n");
+                nsc[data[1]].pwd = data[2];
+            }
+            else
+            {
+                client.send(res);
+                nsc[data[1]] = null;
+            }
+        };
+
+	    if (data[0] == 'auth' && data.length == 4 && data[1] !== "")
+	    {
+            if (nsc[data[1]] === undefined || nsc[data[1]] === null)
+            {
+                nsc[data[1]] = {};
+                nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
+                    escape(unescape(data[1])), unescape(data[2]), escape(unescape(data[3])),
+                    ns_connect_callback, client);
+            }
+            else if (nsc[data[1]].pwd == data[2])
+            {
+                if (!nsc[data[1]].sock.setWs(client))
+                    nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
+                        escape(unescape(data[1])), unescape(data[2]), escape(unescape(data[3])),
+                        ns_connect_callback, client);
+                else
+                    ns_connect_callback(null);
             }
 	        else
 		        client.send("Wrong password, could not resume netsoul session\n");
