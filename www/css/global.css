@@ -1,0 +1,418 @@
+/*
+ * WebSoul default UI : Parts of this code comes from Chromium UI, under
+ * BSD-style licence : http://code.google.com/chromium/terms.html
+ * Copyright (c) 2011 The Chromium Authors. All rights reserved.
+ * Copyright (c) 2011 Vincent Giersch <mail@vincent.sh>
+*/
+
+body
+{
+    margin:0 auto;
+    height:100%;
+    font-family:Arial, sans-serif;
+    font-size:small;
+}
+
+.cl_left
+{
+    clear:left;
+}
+
+/* Forms */
+input[type='password'],
+input[type='text'],
+input[type='url'],
+input:not([type]) {
+  -webkit-border-radius: 2px;
+  border: 1px solid #aaa;
+  font-size: inherit;
+  padding: 3px;
+}
+
+input[type='button'],
+input[type='submit'] {
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-user-select: none;
+  -moz-border-radius: 2px;
+  -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  -moz-user-select: none;
+  background: -webkit-linear-gradient(#fafafa, #f4f4f4 40%, #e5e5e5), -moz-linear-gradient(#fafafa, #f4f4f4 40%, #e5e5e5);
+  border: 1px solid #aaa;
+  color: #444;
+  font-size: inherit;
+  margin-bottom: 0px;
+  min-width: 4em;
+  padding: 3px 12px 3px 12px;
+}
+
+input[type='button']:hover,
+input[type='submit']:hover {
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  background: #ebebeb -webkit-linear-gradient(#fefefe, #f8f8f8 40%, #e9e9e9), -moz-linear-gradient(#fefefe, #f8f8f8 40%, #e9e9e9);
+  border-color: #999;
+  color: #222;
+}
+
+input[type='button']:active,
+input[type='submit']:active {
+  -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2), -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+  background: #ebebeb -webkit-linear-gradient(#f4f4f4, #efefef 40%, #dcdcdc), -moz-linear-gradient(#f4f4f4, #efefef 40%, #dcdcdc);
+  color: #333;
+}
+
+button[disabled],
+input[type='submit'][disabled],
+button[disabled]:hover,
+input[type='submit'][disabled]:hover {
+  -webkit-box-shadow: none;
+  background: -webkit-linear-gradient(#fafafa, #f4f4f4 40%, #e5e5e5);
+  border-color: #aaa;
+  color: #888;
+}
+
+select {
+  -webkit-appearance: button;
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-padding-end: 20px;
+  -webkit-padding-start: 2px;
+  -webkit-user-select: none;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAICAYAAAAbQcSUAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sCDwEnBT3jKacAAABaSURBVCjPY2CgA4gC4jQ8OIpokxKBgJmZ+RuQ+R8dg8RB8kQb9v//f4UFCxYsZGNj+4lsEIgPEgfJk+RPdAPJNgjdQD4+vi8UGYRs4Nu3b5soNgjJQFZi1AEAhHNE/wdnPVcAAAAASUVORK5CYII="), -webkit-linear-gradient(#fafafa, #f4f4f4 40%, #e5e5e5);
+  background-position: center right;
+  background-repeat: no-repeat;
+  border: 1px solid #aaa;
+  color: #555;
+  font-size: inherit;
+  margin: 0;
+  overflow: hidden;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html[dir='rtl'] select {
+  background-position: center left;
+}
+
+select:hover {
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAICAYAAAAbQcSUAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sCDwEnBT3jKacAAABaSURBVCjPY2CgA4gC4jQ8OIpokxKBgJmZ+RuQ+R8dg8RB8kQb9v//f4UFCxYsZGNj+4lsEIgPEgfJk+RPdAPJNgjdQD4+vi8UGYRs4Nu3b5soNgjJQFZi1AEAhHNE/wdnPVcAAAAASUVORK5CYII="), -webkit-linear-gradient(#fefefe, #f8f8f8 40%, #e9e9e9);
+  color: #333;
+}
+
+select:active {
+  -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAICAYAAAAbQcSUAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sCDwEnBT3jKacAAABaSURBVCjPY2CgA4gC4jQ8OIpokxKBgJmZ+RuQ+R8dg8RB8kQb9v//f4UFCxYsZGNj+4lsEIgPEgfJk+RPdAPJNgjdQD4+vi8UGYRs4Nu3b5soNgjJQFZi1AEAhHNE/wdnPVcAAAAASUVORK5CYII="), -webkit-linear-gradient(#f4f4f4, #efefef 40%, #dcdcdc);
+  color: #444;
+}
+
+input[type=checkbox],
+input[type=radio] {
+  margin-left: 0;
+  margin-right: 0;
+  position: relative;
+  top: 1px;
+}
+
+/* Throbber */
+.throbber
+{
+    background: url('../img/throbber.svg');
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+}
+
+
+/* Overlays */
+
+#overlay
+{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -webkit-box-align:center;
+    -moz-box-align:center;
+    -webkit-box-pack:center;
+    -moz-box-pack:center;
+    -moz-box-orient: horizontal;
+    background:-webkit-radial-gradient(rgba(127, 127, 127, 0.5), rgba(127, 127, 127, 0.5) 35%, rgba(0, 0, 0, 0.7));
+    background:-moz-radial-gradient(rgba(127, 127, 127, 0.5), rgba(127, 127, 127, 0.5) 35%, rgba(0, 0, 0, 0.7));
+    position:fixed;
+    left: 0;
+    top: 0;
+    right:0;
+    bottom:0;
+    width:100%;
+    height:100%;
+    z-index:10;
+    display:-webkit-box;
+    display:-moz-box;
+}
+
+#overlay h2
+{
+    background: -webkit-linear-gradient(white, #F8F8F8);
+    background: -moz-linear-gradient(white, #F8F8F8);
+    border-bottom: 1px solid rgba(188, 193, 208, .5);
+    color: #53637D;
+    font-size: 105%;
+    font-weight: bold;
+    padding: 10px 15px 8px 15px;
+}
+
+#overlay .box
+{
+    position:relative;
+    -webkit-box-shadow: 0px 5px 80px #505050;
+    -moz-box-shadow: 0px 5px 80px #505050;
+    background: white;
+    border: 1px solid #BCC1D0;
+    border-radius: 2px;
+    width: 400px;
+    min-width: 400px;
+}
+
+/* Because Firefox is doing shit with position:fixed on overlay */
+#overlay .box, x:-moz-any-link, x:default
+{
+    margin:300px auto 0 auto;
+}
+
+#overlay .box .content
+{
+    padding: 10px 15px 5px 15px;
+}
+
+#overlay .box#box_connect
+{
+    display:none;
+}
+
+#overlay .box#box_loading .content
+{
+    text-align:center;
+    padding:20px 0;
+}
+
+#overlay .box#box_loading .content p
+{
+    margin: 15px 0 0 0;
+}
+
+#overlay .box .content span
+{
+    display:block;
+    margin:6px 0 6px 40px;
+}
+
+#overlay .box .content label
+{
+    float:left;
+    width:100px;
+}
+
+#overlay .box .action
+{
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-box-pack: end;
+    -moz-box-pack: end;
+    border-top: 1px solid rgba(188, 193, 208, .5);
+    display: -webkit-box;
+    padding: 12px;
+}
+
+#side
+{
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    width:300px;
+    background:-webkit-linear-gradient(left, #EAEEF3, #EAEEF3 97%, #D3D7DB);
+    background:-moz-linear-gradient(left, #EAEEF3, #EAEEF3 97%, #D3D7DB);
+    -webkit-user-select:none;
+    -moz-user-select:none;
+}
+
+#side h1
+{
+    font-size:200%;
+    padding:15px 25px 10px 0;
+    color:#53637d;
+    text-shadow:#fff 0 1px 2px;
+    text-align:right;
+}
+
+#side .list_contacts
+{
+    overflow:auto
+}
+
+#side .list_contacts li
+{
+    cursor:pointer;
+    clear:right;
+    text-align:right;
+    color:#426DC9;
+    padding:16px 24px 16px 0;
+}
+
+#side .list_contacts li img
+{
+    margin:-10px 0 0 8px;
+    width:30px;
+    border:1px solid #CAD0D9;
+    float:right;
+}
+
+#side .list_contacts li:hover
+{
+    background:#BBCEE9;
+    background:-webkit-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
+    background:-moz-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
+    border-bottom:1px solid #8FAAD9;
+    border-top:1px solid #8FAAD9;
+    padding:15px 24px 15px 0;
+}
+
+#side .list_contacts li.side_unread
+{
+    background:#ED9015;
+    border-bottom:1px solid #D68213;
+    border-top:1px solid #D68213;
+    padding:15px 24px 15px 0;
+}
+
+.circle_status
+{
+    width:12px;
+    height:12px;
+}
+
+#side .circle_status
+{
+    position:absolute;
+    right:50px;
+    margin:18px 0 0 0;
+}
+
+#side .side_list_tmp
+{
+    opacity:0.6;
+}
+
+#side .side_list_tmp:hover
+{
+    opacity:1;
+}
+
+#content .circle_status
+{
+    float:left;
+    margin:1px 4px 0 0;
+}
+
+.circle_status.actif
+{
+    background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAxhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDM0MiwgMjAxMC8wMS8xMC0xODowNjo0MyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo1REE2NkM1NDVCRDUxMUUwOTMxNUFGNUY4QUM3RTk5RSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo1REE2NkM1NTVCRDUxMUUwOTMxNUFGNUY4QUM3RTk5RSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjVEQTY2QzUyNUJENTExRTA5MzE1QUY1RjhBQzdFOTlFIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjVEQTY2QzUzNUJENTExRTA5MzE1QUY1RjhBQzdFOTlFIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+8/uNFAAAAKRJREFUeNpi1LhiwAAFokDcC8T2QCwHFbsMxIuBuA+I/4IEmKASrkB8FYhjkRSDgC4QdwHxMSCWhmlQAeKNUBtwATMgXg3EzCAN7UDMyUAYWAJxIEiDNwPxIISJSNNhQIWJgTTwF6ThBQkazoI0zCVBw1yQhg4gvkaE4ikwG74AsScQH8ejeCIQF4AYLFCBR0BsBcRRQBwOi1WQiVAnn4LpBAgwANjjGfNl1XneAAAAAElFTkSuQmCC");
+}
+
+.circle_status.away
+{
+    background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAxhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDM0MiwgMjAxMC8wMS8xMC0xODowNjo0MyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCNTVGMjA3RjVCRDYxMUUwOURBNEUxRkMwRkM2QzBEOSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCNTVGMjA4MDVCRDYxMUUwOURBNEUxRkMwRkM2QzBEOSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkI1NUYyMDdENUJENjExRTA5REE0RTFGQzBGQzZDMEQ5IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkI1NUYyMDdFNUJENjExRTA5REE0RTFGQzBGQzZDMEQ5Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+no2m3QAAAKRJREFUeNpifJAhwQAFokDcC8T2QCwHFbsMxIuBuA+I/4IEmKASrkB8FYhjkRSDgC4QdwHxMSCWhmlQAeKNUBtwATMgXg3EzCAN7UDMyUAYWAJxIEiDNwPxIISJSNNhQIWJgTTwF6ThBQkazoI0zCVBw1yQhg4gvkaE4ikwG74AsScQH8ejeCIQF4AYLFCBR0BsBcRRQBwOi1WQiVAnn4LpBAgwAFDKGifboM+UAAAAAElFTkSuQmCC");
+}
+
+#side #contact_add
+{
+    display:none;
+    text-align:right;
+    color:#333;
+    margin:15px 24px 0 0;
+}
+
+#content
+{
+    margin:0 0 0 325px;
+    max-width:888px;
+    min-width:600px;
+}
+
+#content #content_menu
+{
+    display:none;
+    float:right;
+}
+
+#content h2
+{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    font-size:200%;
+    padding:15px 25px 10px 0;
+    color:#53637d;
+    border-bottom:1px solid #eee;
+    text-shadow:#fff 0 1px 2px;
+    text-align:left;
+}
+
+#content #chat_right
+{
+    float:right;
+    width:180px;
+}
+
+#content #chat_right img
+{
+    width:140px;
+    border:1px solid #CAD0D9;
+    margin:5px;
+}
+
+#content #chat_right #chat_right_me
+{
+    position:absolute;
+    bottom:15px;
+}
+
+#content #chat_form
+{
+    position:absolute;
+    bottom:15px;
+}
+
+#content #chat_form textarea
+{
+    width:700px;
+    height:65px;
+}
+
+#content #chat_form div
+{
+    text-align:right;
+}
+
+#content #chat_form input[type="submit"],
+#content #chat_form input[type="button"]
+{
+    padding:3px 5px;
+}
+
+#content #chat_data
+{
+    width:700px;
+    margin:15px 0 0 0;
+    padding:0 5px 0 0;
+    overflow:auto;
+}
+
+#content #chat_data p
+{
+    text-align:justify; 
+}
