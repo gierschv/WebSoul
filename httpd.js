@@ -36,7 +36,7 @@ if (process.argv.length != 4)
 }
 
 // Cloud9ide
-// process.argv[3] = process.env.C9_PORT;
+process.argv[3] = process.env.C9_PORT;
 
 // List allowed users
 var login_allowed = ["giersc_v"];
@@ -84,7 +84,7 @@ socket.on("connection", function(client){
 	    {
 	        if (!data[1] in login_allowed)
 		        client.send("You're not allowed to connect from here");
-            else if (nsc[data[1]] === undefined)
+            else if (nsc[data[1]] === undefined || nsc[data[1]] === null)
             {
                 nsc[data[1]] = {};
                 nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
@@ -97,11 +97,14 @@ socket.on("connection", function(client){
                             client.removeListener("message", auth_callback);
                             client.addListener("message", nsc[data[1]].sock.send);
                             client.addListener("disconnect", function(){ nsc[data[1]].sock.setWs(null); });
+                            nsc[data[1]].pwd = data[2];
                         }
                         else
-                            client.send(data);
+                        {
+                            client.send(res);
+                            nsc[data[1]] = null;
+                        }
                     }, client);
-                nsc[data[1]].pwd = data[2];
             }
             else if (nsc[data[1]].pwd == data[2])
             {
