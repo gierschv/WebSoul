@@ -100,7 +100,7 @@ socket.on("connection", function(client){
             {
                 nsc[data[1]] = {};
                 nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
-                    encodeURIComponent(decodeURIComponent(gdata[1])), decodeURIComponent(data[2]), encodeURIComponent(decodeURIComponent(data[3])),
+                    encodeURIComponent(decodeURIComponent(data[1])), decodeURIComponent(data[2]), encodeURIComponent(decodeURIComponent(data[3])),
                     ns_connect_callback, client);
             }
             else if (nsc[data[1]].pwd == data[2])
