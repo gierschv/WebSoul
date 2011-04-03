@@ -19,7 +19,7 @@
 
 function ui()
 {
-    var socket = new io.Socket("127.0.0.1");
+    var socket = new io.Socket(window.location.hostname);
     var ns = new websoul(socket);
     var loggued_as = null;
 

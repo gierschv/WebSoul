@@ -23,4 +23,4 @@ WebSoul uses...
 
 Usage
 -----
-    $ node httpd.js 0.0.0.0 4242
+    $ node httpd.js 0.0.0.0 80
