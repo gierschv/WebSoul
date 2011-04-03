@@ -220,7 +220,7 @@ function ui()
 						 (!info[10].indexOf("actif") ? "actif" : "away") +
 						 '"></div> ' + info[2] + ' : <span id="sock_location_' +
 						 info[0] + '">Unkown</span></li>');
-		            $("#sock_location_" + info[0]).text(unescape(info[8]));
+		            $("#sock_location_" + info[0]).text(decodeURIComponent(info[8]));
 	            }
 	        });
             
@@ -257,7 +257,7 @@ function ui()
 			       (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()) + ') ' +
 			       histo.from + '</b>: <span></span></p>');
 	    histo.msg = histo.msg.replace(new RegExp("<br />", "g"), "\n");
-	    $("#chat_data > p:last > span").text(histo.msg);
+	    $("#chat_data > p:last > span").text(histo.msg).anchorTextUrls();
 	    histo.read = 1;
     }
     
@@ -390,7 +390,7 @@ function ui()
                 {
                     var ck_date = new Date();
                     ck_date.setTime(ck_date.getTime() + (365 * 24 * 3600 * 1000));
-                    document.cookie = "ns_auth=" + escape($("#connect_login").val() +
+                    document.cookie = "ns_auth=" + encodeURIComponent($("#connect_login").val() +
                                     " " + $("#connect_password").val() +
                                     " " + $("#connect_location").val()) +
                                     ";expires=" + ck_date.toGMTString();
@@ -414,9 +414,9 @@ function ui()
         socket.addEvent("message", login_callback);
         $("#box_connect").hide();
         $("#box_loading").show();
-        socket.send("auth " + escape($("#connect_login").val()) +
-                " " + escape($("#connect_password").val()) +
-                " " + escape($("#connect_location").val()));
+        socket.send("auth " + encodeURIComponent($("#connect_login").val()) +
+                " " + encodeURIComponent($("#connect_password").val()) +
+                " " + encodeURIComponent($("#connect_location").val()));
         return false;
     });
 
@@ -427,7 +427,7 @@ function ui()
         $("#box_loading").hide();
         if (document.cookie.indexOf("ns_auth=") >= 0)
         {
-            var ck = unescape(document.cookie.split("ns_auth=")[1].split(";")[0]).split(" ");
+            var ck = decodeURIComponent(document.cookie.split("ns_auth=")[1].split(";")[0]).split(" ");
             $("#connect_login").val(ck[0]);
             $("#connect_password").val(ck[1]);
             $("#connect_location").val(ck[2]);
