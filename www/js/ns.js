@@ -35,14 +35,20 @@ function websoul(socket)
 
     // Public methods for ui
     return {
+        // Send fncs
         user_cmd_who: function(login, callback)
         {
+            if (login === null)
+                return;
             // Call with an array of logins : serialize
             if (login.constructor == Array)
             {
+                if (login.constructor.length === 0)
+                    return;
                 var tab = [];
                 for (var i = 0 ; i < login.length ; i++)
-                    tab[i] = login[i].login;
+                    if (login[i] !== null)
+                        tab[i] = login[i].login;
                 login = serialize_ns(tab);
             }
 
@@ -68,10 +74,29 @@ function websoul(socket)
             socket.addEvent('message', result_who);
             socket.send("user_cmd who " + login + "\n");
         },
+        user_cmd_watch_log_user: function(login)
+        {
+            if (login === false)
+                return;
+            // Call with an array of logins : serialize
+            if (login.constructor == Array)
+            {
+                if (login.constructor.length === 0)
+                    return;
+                var tab = [];
+                for (var i = 0 ; i < login.length ; i++)
+                    if (login[i] !== null)
+                        tab[i] = login[i].login;
+                login = serialize_ns(tab);
+            }
+            socket.send("user_cmd watch_log_user " + login + "\n");
+        },
         user_cmd_msg_user: function(login, msg)
         {
             socket.send("user_cmd msg_user " + login + " msg " + escape(msg) + "\n");
 	    },
+        
+        // Receiv fns
         user_cmd_msg_receiv: function(msg)
         {
             if (msg.indexOf(' | msg ') > 0)
@@ -79,10 +104,29 @@ function websoul(socket)
                 msg = msg.split(' | msg ');
                 res = {};
                 res.login = msg[0].split(' ')[1].split(':')[3].split('@')[0];
-                res.msg = decodeURIComponent(msg[1].split(' ')[0]);
+                res.msg = unescape(msg[1].split(' ')[0]);
                 return res;
 	        }
 	        return null;
-	    }
+	    },
+        user_cmd_state_receiv: function(msg)
+        {
+             if (msg.indexOf(' | state ') > 0)
+             {
+                msg = msg.split(' | state ');
+                res = {};
+                res.login = msg[0].split(' ')[1].split(':')[3].split('@')[0];
+                res.state = unescape(msg[1].split(' ')[0]);
+                return res;
+             }
+             if (msg.indexOf(' | login ') > 0 || msg.indexOf(' | logout ') > 0)
+             {
+                res = {};
+                res.login = msg.split(' ')[1].split(':')[3].split('@')[0];
+                res.state = msg.indexOf(' | login ') > 0 ? "login" : "logout";
+                return res;
+             }
+             return null;
+        }
    };
 }

@@ -3,8 +3,7 @@ WebSoul : A full Javascript Netsoul Client
 
 What is netsoul ? NetSoul is the IONIS schools athentification and IM protocol.
 
-WebSoul implements basics features of Netsoul Protocol. WebSoul is a WIP. For
-example, many features are not yet implemented, like "watch_log_user".
+WebSoul implements basics features of Netsoul Protocol. WebSoul is a WIP.
 
 WebSoul is distributed under the GPL version 3.
 The UI uses a part of Chromium CSS, under BSD-style licence.

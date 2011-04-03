@@ -107,6 +107,7 @@ function ui()
 				   login + '"><img src="http://www.epitech.eu/intra/photos/' +
 				   login + '.jpg" /><div class="circle_status"></div></div>' + login + '</li>');
         ns.user_cmd_who(login, contacts_side_callback);
+        ns.user_cmd_watch_log_user(tab);
     }
 
     function contacts_side_callback(list)
@@ -127,7 +128,8 @@ function ui()
     {
         $(".photo_" + login + " > .circle_status").removeClass("actif");
         $(".photo_" + login + " > .circle_status").removeClass("away");
-        $(".photo_" + login + " > .circle_status").addClass(status);
+        if (status != "logout")
+            $(".photo_" + login + " > .circle_status").addClass(status);
     }
 
     // Init the UI
@@ -157,11 +159,13 @@ function ui()
         $(".list_contacts").html("");
         for (var i = 0 ; i < contacts.length ; i++)
         {
-            $(".list_contacts").append('<li title="' + contacts[i].login + '" class="' + (contacts[i].is_contact ? "side_list_friend" : "side_list_tmp") + '"><div class="photo photo_' +
+            if (contacts[i] !== null)
+                $(".list_contacts").append('<li title="' + contacts[i].login + '" class="' + (contacts[i].is_contact ? "side_list_friend" : "side_list_tmp") + '"><div class="photo photo_' +
 				       contacts[i].login + '"><img src="http://www.epitech.eu/intra/photos/' +
 				       contacts[i].login + '.jpg" /><div class="circle_status"></div></div>' + contacts[i].login + '</li>');
         }
         ns.user_cmd_who(contacts, contacts_side_callback);
+        ns.user_cmd_watch_log_user(contacts);
         $("img").error(function(){
             $(this).attr("src", "http://www.epitech.eu/intra/photos/no.jpg");
         });
@@ -325,7 +329,8 @@ function ui()
             {
                 var notif = window.webkitNotifications.createNotification("http://www.epitech.eu/intra/photos/" +
                     data.login+ ".jpg", "Netsoul from " + data.login, data.msg);
-                notif.ondisplay = function(event) {
+                notif.ondisplay = function(event)
+                {
                     setTimeout(function() { event.currentTarget.cancel(); }, 5000);
                 };
                 notif.onclick = function(event)
@@ -338,6 +343,36 @@ function ui()
         // If no chat opened, display open a new conversation
         if ($("#content").attr("title") === "")
             chat_init(data.login);
+    }
+
+    // Callback function when recevie a change of state
+    function state_receive(data)
+    {
+        // Login or actif -> set actif
+        if (data.state == "login" || data.state.indexOf("actif") >= 0)
+        {
+            if (window.webkitNotifications && !window.webkitNotifications.checkPermission())
+            {
+                var notif = window.webkitNotifications.createNotification("http://www.epitech.eu/intra/photos/" +
+                    data.login+ ".jpg", data.login + " login", data.login + " has just login");
+                notif.ondisplay = function(event)
+                {
+                    setTimeout(function() { event.currentTarget.cancel(); }, 5000);
+                };
+                notif.onclick = function(event)
+                {
+                    chat_init(data.login);
+                };
+                notif.show();
+            }
+            contacts_side_status(data.login, "actif");            
+        }
+        // Logout or away -> search another better state
+        else
+        {
+            contacts_side_status(data.login, "logout");
+            ns.user_cmd_who(data.login, contacts_side_callback);
+        }
     }
 
 
@@ -405,6 +440,8 @@ function ui()
         var data_tmp;
         if ((data_tmp = ns.user_cmd_msg_receiv(data)) !== null)
             message_receive(data_tmp);
+        else if ((data_tmp = ns.user_cmd_state_receiv(data)) !== null)
+            state_receive(data_tmp);            
     });
 
     // Trying to reconnect

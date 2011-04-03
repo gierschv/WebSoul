@@ -375,10 +375,20 @@ input[type=radio] {
     margin:5px;
 }
 
+#content #chat_right_status
+{
+    margin:0 0 0 5px;   
+}
+
 #content #chat_right #chat_right_me
 {
     position:absolute;
     bottom:15px;
+}
+
+#content #chat_right #chat_right_me span
+{
+    margin:0 0 0 5px;
 }
 
 #content #chat_form
