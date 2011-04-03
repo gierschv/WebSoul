@@ -393,7 +393,8 @@ function ui()
                                     " " + $("#connect_location").val()) +
                                     ";expires=" + ck_date.toGMTString();
                 }
-                $("#box_connect").hide();$("#overlay").hide();
+                $("#box_connect").hide();
+                $("#overlay").hide();
                 $("#contact_add").show();
                 $("#content_menu").show();
                 loggued_as = $("#connect_login").val();
@@ -409,6 +410,7 @@ function ui()
         };
 
         socket.addEvent("message", login_callback);
+        $("#box_connect").hide();
         $("#box_loading").show();
         socket.send("auth " + escape($("#connect_login").val()) +
                 " " + escape($("#connect_password").val()) +
