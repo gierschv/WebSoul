@@ -39,7 +39,7 @@ if (process.argv.length != 4)
 //process.argv[3] = process.env.C9_PORT;
 
 var httpd = http.createServer(function(req, res){ 
-    var basepath = path.join(process.cwd(), "/www");
+    var basepath = path.join(__dirname, "/www");
     var uri = url.parse(req.url).pathname;
     if (uri == "/")
 	uri = "index.html";
