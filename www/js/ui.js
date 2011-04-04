@@ -438,14 +438,18 @@ function ui()
     });
 
     socket.on('message', function(data) {
-        // debug
-        console.log(data);
-        // -->
-        var data_tmp;
-        if ((data_tmp = ns.user_cmd_msg_receiv(data)) !== null)
-            message_receive(data_tmp);
-        else if ((data_tmp = ns.user_cmd_state_receiv(data)) !== null)
-            state_receive(data_tmp);            
+        data = data.split('\n');
+        for (var i = 0 ; i < data.length ; i++)
+        {
+            // debug
+            console.log(data[i]);
+            // -->
+            var data_tmp;
+            if ((data_tmp = ns.user_cmd_msg_receiv(data[i])) !== null)
+                message_receive(data_tmp);
+            else if ((data_tmp = ns.user_cmd_state_receiv(data[i])) !== null)
+                state_receive(data_tmp);        
+        }
     });
 
     // Trying to reconnect

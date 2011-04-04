@@ -83,7 +83,7 @@ socket.on("connection", function(client){
             {
                 client.removeListener("message", auth_callback);
                 client.addListener("message", nsc[data[1]].sock.send);
-                client.addListener("disconnect", function(){ nsc[data[1]].sock.setWs(null); });
+                client.addListener("disconnect", function(){ if (nsc[data[1]] !== null && nsc[data[1]].sock !== null) nsc[data[1]].sock.setWs(null); });
                 client.send("ok\n");
                 nsc[data[1]].pwd = data[2];
             }
