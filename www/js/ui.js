@@ -352,7 +352,7 @@ function ui()
     function state_receive(data)
     {
         // Login or actif -> set actif
-        if (data.state == "login" || data.state.indexOf("actif") >= 0)
+        if (data.state == "login")
         {
             if (window.webkitNotifications && !window.webkitNotifications.checkPermission())
             {
