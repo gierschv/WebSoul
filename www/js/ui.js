@@ -313,6 +313,22 @@ function ui()
         // If contact isn't a friend, add it as a tmp
         if (!contact_is_in_list(data.login))
             contacts_add(data.login, 0);
+        // Displaying a Desktop notification in Chrom{e,ium}
+        if (window.webkitNotifications && !window.webkitNotifications.checkPermission())
+        {
+                var notif = window.webkitNotifications.createNotification("http://www.epitech.eu/intra/photos/" +
+                    data.login+ ".jpg", "Netsoul from " + data.login, data.msg);
+                notif.ondisplay = function(event)
+                {
+                    setTimeout(function() { event.currentTarget.cancel(); }, 5000);
+                };
+                notif.onclick = function(event)
+                {
+                    chat_init(data.login);
+                };
+                notif.show();
+        }
+        
         // If it's a message in the current conversation
         if ($("#content").attr("title") == data.login ||
             $("#content").attr("title") === "")
@@ -326,21 +342,6 @@ function ui()
         {
             $('li[title="' + data.login + '"]').removeClass("side_read");
             $('li[title="' + data.login + '"]').addClass("side_unread");
-            // Displaying a Desktop notification in Chrom{e,ium}
-            if (window.webkitNotifications && !window.webkitNotifications.checkPermission())
-            {
-                var notif = window.webkitNotifications.createNotification("http://www.epitech.eu/intra/photos/" +
-                    data.login+ ".jpg", "Netsoul from " + data.login, data.msg);
-                notif.ondisplay = function(event)
-                {
-                    setTimeout(function() { event.currentTarget.cancel(); }, 5000);
-                };
-                notif.onclick = function(event)
-                {
-                    chat_init(data.login);
-                };
-                notif.show();
-            }
         }
         // If no chat opened, display open a new conversation
         if ($("#content").attr("title") === "")
