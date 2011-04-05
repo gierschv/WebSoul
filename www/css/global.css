@@ -299,7 +299,8 @@ input[type=radio] {
 #side .circle_status
 {
     position:relative;
-    left:223px;
+    float:right;
+    right:-15px;
     top:20px;
 }
 
