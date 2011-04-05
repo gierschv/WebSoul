@@ -378,8 +378,7 @@ function ui()
         }
     }
 
-
-    /* Init & Auth */
+    // Login Form submit
     $("#form_login").submit(function() {
         var login_callback = function(data)
         {
@@ -420,7 +419,11 @@ function ui()
                 " " + encodeURIComponent($("#connect_location").val()));
         return false;
     });
+    
+    // Ask to close tab/window
+    window.onbeforeunload = function(){ return "Are you sure to close WebSoul ?"  };
 
+    // Connect to websocket server
     socket.connect();
     socket.on('connect', function() {
         // Displaying connect form
