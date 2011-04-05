@@ -298,9 +298,9 @@ input[type=radio] {
 
 #side .circle_status
 {
-    position:absolute;
-    right:50px;
-    margin:18px 0 0 0;
+    position:relative;
+    left:223px;
+    top:20px;
 }
 
 #side .side_list_tmp
