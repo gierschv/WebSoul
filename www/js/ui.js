@@ -106,8 +106,7 @@ function ui()
         
         $(".list_contacts").append('<li title="' + login + '" class="' + (is_contact ? "side_list_friend" : "side_list_tmp") +
 				   ' ' + (contact_is_unread(login) ? "side_unread" : "side_read") + '"><div class="photo photo_' +
-				   login + '"><img src="http://www.epitech.eu/intra/photos/' +
-				   login + '.jpg" /><div class="circle_status"></div></div>' + login + '</li>');
+				   login + '"><img src="http://www.epitech.eu/intra/photos/no.jpg" /><div class="circle_status"></div></div>' + login + '</li>');
         ns.user_cmd_who(login, contacts_side_callback);
         ns.user_cmd_watch_log_user(tab);
     }
@@ -161,16 +160,13 @@ function ui()
         $(".list_contacts").html("");
         for (var i = 0 ; i < contacts.length ; i++)
         {
-            if (contacts[i] !== null)
-                $(".list_contacts").append('<li title="' + contacts[i].login + '" class="' + (contacts[i].is_contact ? "side_list_friend" : "side_list_tmp") + '"><div class="photo photo_' +
-				       contacts[i].login + '"><img src="http://www.epitech.eu/intra/photos/' +
-				       contacts[i].login + '.jpg" /><div class="circle_status"></div></div>' + contacts[i].login + '</li>');
+	    $(".list_contacts").append('<li title="' + contacts[i].login + '" class="' + (contacts[i].is_contact ? "side_list_friend" : "side_list_tmp") + '"><div class="photo photo_' +
+				       contacts[i].login + '"><img src="http://www.epitech.eu/intra/photos/no.jpg" /><div class="circle_status"></div></div>' + contacts[i].login + '</li>');
+	    $(".list_contacts > li[title='" + contacts[i].login + "'] > div > img").attr("src", "http://www.epitech.eu/intra/photos/" + contacts[i].login + ".jpg")
+		.error(function() { $(this).attr("src", "http://www.epitech.eu/intra/photos/no.jpg"); });
         }
         ns.user_cmd_who(contacts, contacts_side_callback);
         ns.user_cmd_watch_log_user(contacts);
-        $("img").error(function(){
-            $(this).attr("src", "http://www.epitech.eu/intra/photos/no.jpg");
-        });
     }
 
     // Init a chat session
@@ -184,7 +180,8 @@ function ui()
             // Set up content
             $("#content").html(data).attr("title", login);
             $("#content > h2 > span").text(login);
-            $("#chat_photo_contact").attr("src", "http://www.epitech.eu/intra/photos/" + login + ".jpg");
+            $("#chat_photo_contact").attr("src", "http://www.epitech.eu/intra/photos/" + login + ".jpg")
+		.error(function() { $(this).attr("src", "http://www.epitech.eu/intra/photos/no.jpg"); });
             $("#chat_photo_me").attr("src", "http://www.epitech.eu/intra/photos/" + loggued_as + ".jpg");
             $("#chat_right_me > span").text(loggued_as);
             
