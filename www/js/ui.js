@@ -233,10 +233,10 @@ function ui()
         if ($("#chat_textarea").val() !== "")
         {
             ns.user_cmd_msg_user($("#content").attr("title"), $("#chat_textarea").val());
-            var histo = local_storage_add_chat($("#chat_textarea").attr("name"), "Me", $("#chat_textarea").val(), 1);
+            var histo = local_storage_add_chat($("#content").attr("title"), "Me", $("#chat_textarea").val(), 1);
             $("#chat_textarea").val("");
             // Add line in #chat_data and scroll
-            char_display_history_line($("textarea:first").val(), histo);
+            char_display_history_line($("#chat_textarea").val(), histo);
             $("#chat_data").scrollTo('100%', '0', {duration:100});
         }
         return false;
