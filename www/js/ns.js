@@ -38,6 +38,7 @@ function websoul(socket)
         // Send fncs
         user_cmd_who: function(login, callback)
         {
+	    console.log("Call user_cmd_who");
             if (login === null)
                 return;
             // Call with an array of logins : serialize
@@ -98,8 +99,8 @@ function websoul(socket)
         },
         user_cmd_msg_user: function(login, msg)
         {
-            socket.send("user_cmd msg_user " + login + " msg " + encodeURIComponent(msg) + "\n");
-	    },
+	    socket.send("user_cmd msg_user " + login + " msg " + encodeURIComponent(msg) + "\n");
+	},
         
         // Receiv fns
         user_cmd_msg_receiv: function(msg)

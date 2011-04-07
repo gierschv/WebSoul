@@ -74,49 +74,58 @@ var socket = io.listen(httpd);
 var nsc = [];
 
 socket.on("connection", function(client){ 
-    var auth_callback = function(data)
-    {
-	    data = data.split(' ');
-        var ns_connect_callback = function(res)
-        {
-            if (res === null)
-            {
-                client.removeListener("message", auth_callback);
-                client.addListener("message", nsc[data[1]].sock.send);
-                client.addListener("disconnect", function(){ if (nsc[data[1]] !== null && nsc[data[1]].sock !== null) nsc[data[1]].sock.setWs(null); });
-                client.send("ok\n");
-                nsc[data[1]].pwd = data[2];
-            }
-            else
-            {
-                client.send(res);
-                nsc[data[1]] = null;
-            }
-        };
-
-	    if (data[0] == 'auth' && data.length == 4 && data[1] !== "")
+	var auth_callback = function(data)
 	    {
-            if (nsc[data[1]] === undefined || nsc[data[1]] === null)
-            {
-                nsc[data[1]] = {};
-                nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
-                    encodeURIComponent(decodeURIComponent(data[1])), decodeURIComponent(data[2]), encodeURIComponent(decodeURIComponent(data[3])),
-                    ns_connect_callback, client);
-            }
-            else if (nsc[data[1]].pwd == data[2])
-            {
-                if (!nsc[data[1]].sock.setWs(client))
-                    nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
-                        encodeURIComponent(decodeURIComponent(data[1])), decodeURIComponent(data[2]), encodeURIComponent(decodeURIComponent(data[3])),
-                        ns_connect_callback, client);
-                else
-                    ns_connect_callback(null);
-            }
-	        else
-		        client.send("Wrong password, could not resume netsoul session\n");
-        }
-	    else
-	        client.send("Form error\n");
-    };
-    client.addListener("message", auth_callback);
-});
+		data = data.split(' ');
+		var ns_connect_callback = function(res)
+		{
+		    if (res === null)
+			{
+			    client.removeListener("message", auth_callback);
+			    if (nsc[data[1]].sock)
+				client.addListener("message", nsc[data[1]].sock.send);
+			    client.addListener("disconnect", function(){
+				if (nsc[data[1]] !== null && nsc[data[1]].sock !== null)
+				    {
+					nsc[data[1]].sock.setWs(null);
+					nsc[data[1]].sock.status("away");
+				    }
+			    });
+			    client.send("ok\n");
+			    nsc[data[1]].pwd = data[2];
+			    nsc[data[1]].sock.status("actif");
+			}
+		    else
+			{
+			    client.send(res);
+			    nsc[data[1]] = null;
+			}
+		};
+
+		if (data[0] == 'auth' && data.length == 4 && data[1] !== "")
+		    {
+			if (nsc[data[1]] === undefined || nsc[data[1]] === null)
+			    {
+				nsc[data[1]] = {};
+				nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
+								encodeURIComponent(decodeURIComponent(data[1])), decodeURIComponent(data[2]), encodeURIComponent(decodeURIComponent(data[3])),
+								ns_connect_callback, client);
+			    }
+			else if (nsc[data[1]].pwd == data[2])
+			    {
+				if (!nsc[data[1]].sock.setWs(client))
+				    nsc[data[1]].sock = ns.nsClient("ns-server.epita.fr", 4242,
+								    encodeURIComponent(decodeURIComponent(data[1])), decodeURIComponent(data[2]), encodeURIComponent(decodeURIComponent(data[3])),
+								    ns_connect_callback, client);
+				else
+				    ns_connect_callback(null);
+				
+			    }
+			else
+			    client.send("Wrong password, could not resume netsoul session\n");
+		    }
+		else
+		    client.send("Form error\n");
+	    };
+	client.addListener("message", auth_callback);
+    });
