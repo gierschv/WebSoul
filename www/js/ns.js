@@ -59,9 +59,9 @@ function websoul(socket)
                 var who;
                 var idx = 0;
                 var result = [];
-                
+
                 lines += data;
-                if (lines.indexOf("who rep 002 -- cmd end") < 0)                
+                if (lines.indexOf("who rep 002 -- cmd end") < 0)
                     return;
                 lines = lines.split('\n');
                 for (var i = 0 ; i < lines.length ; i++)
@@ -76,7 +76,7 @@ function websoul(socket)
                 socket.removeEvent('message', result_who);
                 callback(result);
             };
-            
+
             socket.addEvent('message', result_who);
             socket.send("user_cmd who " + login + "\n");
         },
@@ -101,7 +101,7 @@ function websoul(socket)
         {
 	    socket.send("user_cmd msg_user " + login + " msg " + encodeURIComponent(msg) + "\n");
 	},
-        
+
         // Receiv fns
         user_cmd_msg_receiv: function(msg)
         {
