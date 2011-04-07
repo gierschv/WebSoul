@@ -35,6 +35,21 @@ function ui()
         return res;
     }
 
+    // Bubble sort for contacts
+    function contacts_sort(contacts)
+    {
+	var tmp;
+	for (var i = 0; i < contacts.length - 1 ; i++)
+	    for (var j = i + 1 ; j < contacts.length; j++)
+		if (contacts[j].login < contacts[i].login)
+		    {
+			tmp = contacts[i];
+			contacts[i] = contacts[j];
+			contacts[j] = tmp;
+		    }
+	return contacts;
+    }
+
     // Remove a contact from the "contacts" localstorage, the display from the side and the history.
     function contact_remove(login)
     {
@@ -107,6 +122,8 @@ function ui()
         $(".list_contacts").append('<li title="' + login + '" class="' + (is_contact ? "side_list_friend" : "side_list_tmp") +
 				   ' ' + (contact_is_unread(login) ? "side_unread" : "side_read") + '"><div class="photo photo_' +
 				   login + '"><img src="http://www.epitech.eu/intra/photos/no.jpg" /><div class="circle_status"></div></div>' + login + '</li>');
+	$(".list_contacts > li[title='" + login + "'] > div > img").attr("src", "http://www.epitech.eu/intra/photos/" + login + ".jpg")
+	    .error(function() { $(this).attr("src", "http://www.epitech.eu/intra/photos/no.jpg"); });
         ns.user_cmd_who(login, contacts_side_callback);
         ns.user_cmd_watch_log_user(tab);
     }
@@ -121,7 +138,7 @@ function ui()
             else if (!$(".photo_" + contact[1] + " > .circle_status").hasClass("actif"))
                 contacts_side_status(contact[1], "away");
         }
-        init_ready();
+        init();
     }
 
     // Change a contact status
@@ -133,30 +150,67 @@ function ui()
             $(".photo_" + login + " > .circle_status").addClass(status);
     }
 
+    function home_init()
+    {
+	side_close();
+	$("#top").animate({height:"60px"}, 500, function() {
+	    $("#top h1").show();
+	    
+	});
+    }
+
+    function side_init()
+    {
+	$("#side > h1").show();
+    }
+
+    function side_close()
+    {
+	$("#side > .list_contacts").html("");
+	$("#side > h1").hide();
+	$("#side").animate({width:"0px"}, 500);
+    }
+
     // Init the UI
-    function init_ready()
+    function init()
     {
         // Adapt Div height of the contacts list
-        $(".list_contacts").css("height", (window.innerHeight - 125) + "px");
-        $(window).resize(function() { $(".list_contacts").css("height", (window.innerHeight - 125) + "px"); });
+        $(".list_contacts").css("height", (window.innerHeight - 135) + "px");
+        $(window).resize(function() { $(".list_contacts").css("height", (window.innerHeight - 135) + "px"); });
         
         // Bind link : enable chat
-        $(".list_contacts > li").live("click", function() { chat_init($(this).attr('title')); });
+	var openning = false;
+        $(".list_contacts > li").live("click", function() {
+	    console.log($(this).attr('title'));
+	    chat_init($(this).attr('title'));
+	});
         $("#chat_contact_remove").live("click", function() {  contact_remove($("#content").attr("title")); });
         
         // Bind contact_add form
-        $("#contact_add").submit(function(){
+        $("#contact_add").submit(function() {
             if (!contact_is_in_list($("#contact_add > input[type='text']").val()) && $("#contact_add > input[type='text']").val() !== "")
                 contacts_add($("#contact_add > input[type='text']").val(), 1);
             $("#contact_add > input[type='text']").val("");
-	        return false;
+	    return false;
+	});
+
+	// Bind menu links
+	$("h2 > a.close").live("click", function() {
+	    $("#content").fadeOut("fast", function() {
+		    $("#content").html("");
+		    $("#content").attr("title", "");
+		    $("#content").show();
 	    });
+	    home_init();
+	    return false;
+	});
     }
 
     // Display the contact list on the side
-    function init_state_contacts()
+    function contacts_state_init()
     {
-        contacts = contacts_get().sort();
+        contacts = contacts_sort(contacts_get());
+	console.log(contacts);
         $(".list_contacts").html("");
         for (var i = 0 ; i < contacts.length ; i++)
         {
@@ -176,14 +230,15 @@ function ui()
         if (window.webkitNotifications && window.webkitNotifications.checkPermission() > 0)
             window.webkitNotifications.requestPermission();
 
+	side_init();
         $.get("content_chat.html", function(data) {
+		console.log("PASS2");
             // Set up content
             $("#content").html(data).attr("title", login);
             $("#content > h2 > span").text(login);
             $("#chat_photo_contact").attr("src", "http://www.epitech.eu/intra/photos/" + login + ".jpg")
 		.error(function() { $(this).attr("src", "http://www.epitech.eu/intra/photos/no.jpg"); });
             $("#chat_photo_me").attr("src", "http://www.epitech.eu/intra/photos/" + loggued_as + ".jpg");
-            $("#chat_right_me > span").text(loggued_as);
             
             // Chat history height size
             $("#chat_data").css("height", (window.innerHeight - 200) + "px");
@@ -204,6 +259,7 @@ function ui()
             $("#chat_textarea").focus();
             
             // Get contact informations
+	    console.log("Chat_INIT");
             ns.user_cmd_who(login, function(infos) {
                 var info;
                 for (var i = 0 ; i < infos.length ; i++)
@@ -397,8 +453,8 @@ function ui()
                 $("#contact_add").show();
                 $("#content_menu").show();
                 loggued_as = $("#connect_login").val();
-                $("#list_contacts > span").text(loggued_as);
-                init_state_contacts();
+                $("#menu_actions > span").text(loggued_as);
+                contacts_state_init();
             }
             else
             {
