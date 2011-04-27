@@ -99,7 +99,7 @@ function websoul(socket)
         },
         user_cmd_msg_user: function(login, msg)
         {
-	    socket.send("user_cmd msg_user " + login + " msg " + encodeURIComponent(msg) + "\n");
+	    socket.send("user_cmd msg_user " + login + " msg " + escape(msg) + "\n");
 	},
 
         // Receiv fns
@@ -110,11 +110,11 @@ function websoul(socket)
                 msg = msg.split(' | msg ');
                 res = {};
                 res.login = msg[0].split(' ')[1].split(':')[3].split('@')[0];
-                res.msg = decodeURIComponent(msg[1].split(' ')[0]);
+                res.msg = unescape(msg[1].split(' ')[0]);
                 return res;
-	        }
-	        return null;
-	    },
+	    }
+	    return null;
+	},
         user_cmd_state_receiv: function(msg)
         {
              if (msg.indexOf(' | state ') > 0)
@@ -122,7 +122,7 @@ function websoul(socket)
                 msg = msg.split(' | state ');
                 res = {};
                 res.login = msg[0].split(' ')[1].split(':')[3].split('@')[0];
-                res.state = decodeURIComponent(msg[1].split(' ')[0]);
+                res.state = unescape(msg[1].split(' ')[0]);
                 return res;
              }
              if (msg.indexOf(' | login ') > 0 || msg.indexOf(' | logout ') > 0)
